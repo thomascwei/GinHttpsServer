@@ -1,17 +1,32 @@
 package main
 
 import (
+	"flag"
+	"log"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/unrolled/secure"
 )
 
+var isHttps = flag.Bool("isHttps", true, "http server port")
+var port int
+
 func main() {
-	GinHttps(true) // 这里false 表示 http 服务，非 https
+	gin.SetMode(gin.ReleaseMode)
+	flag.Parse()
+	err := GinHttps(*isHttps) // 这里false 表示 http 服务，非 https
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func GinHttps(isHttps bool) error {
+	if isHttps {
+		port = 443
+	} else {
+		port = 80
+	}
 
 	r := gin.Default()
 	r.NoRoute(func(c *gin.Context) {
@@ -19,12 +34,12 @@ func GinHttps(isHttps bool) error {
 	})
 
 	if isHttps {
-		r.Use(TlsHandler(80))
+		r.Use(TlsHandler(port))
 
-		return r.RunTLS(":"+strconv.Itoa(80), "cert.pem", "key.pem")
+		return r.RunTLS(":"+strconv.Itoa(port), "cert.pem", "key.pem")
 	}
 
-	return r.Run(":" + strconv.Itoa(80))
+	return r.Run(":" + strconv.Itoa(port))
 }
 
 func TlsHandler(port int) gin.HandlerFunc {
