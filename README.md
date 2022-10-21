@@ -1,7 +1,7 @@
 # GolangGinHttps 
-**建http server listen 80 & https server listen 443**
-**執行時以參數isHttps決定**
-
+* **建http server listen 80 or https server listen 443**
+* **執行時以參數isHttps決定**
+* **所有url都返回ok**
 
 
 
