@@ -7,7 +7,7 @@
 
 ## compile for linux
 ```shell
-GOOS=linux GOARCH=amd64 go build -o http-https-server .
+GOOS=linux GOARCH=amd64 go build -o thomas-server-http-https .
 ```
 
 ```shell
