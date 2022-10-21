@@ -1,4 +1,9 @@
-# GolangGinHttps
+# GolangGinHttps 
+**建http server listen 80 & https server listen 443**
+**執行時以參數isHttps決定**
+
+
+
 
 ## compile for linux
 ```shell

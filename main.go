@@ -9,7 +9,7 @@ import (
 	"github.com/unrolled/secure"
 )
 
-var isHttps = flag.Bool("isHttps", true, "http server port")
+var isHttps = flag.Bool("isHttps", true, "Use HTTPS")
 var port int
 
 func main() {
