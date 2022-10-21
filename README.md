@@ -3,7 +3,10 @@
 * **執行時以參數isHttps決定**
 * **所有url都返回ok**
 
-
+## 生成私鑰key.pem和證書cert.pem
+```shell
+go run $GOROOT/src/crypto/tls/generate_cert.go --host localhost
+```
 
 ## compile for linux
 ```shell
