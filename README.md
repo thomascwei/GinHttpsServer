@@ -16,4 +16,5 @@ GOOS=linux GOARCH=amd64 go build -o thomas-server-http-https .
 ```shell
 sudo nohup ./thomas-server-http-https -isHttps=true > /dev/null 2>&1 &
 sudo nohup ./thomas-server-http-https -isHttps=false > /dev/null 2>&1 &
+sudo nohup ./thomas-server-http-https > /dev/null 2>&1 &
 ```

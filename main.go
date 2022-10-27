@@ -1,6 +1,7 @@
 package main
 
 import (
+	selfLogger "GinHttps/logger"
 	"flag"
 	"log"
 	"strconv"
@@ -9,37 +10,30 @@ import (
 	"github.com/unrolled/secure"
 )
 
-var isHttps = flag.Bool("isHttps", true, "Use HTTPS")
-var port int
+var (
+	Logger = selfLogger.InitLogger("HttpHttps")
+)
 
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 	flag.Parse()
-	err := GinHttps(*isHttps) // 这里false 表示 http 服务，非 https
+	err := GinHttps()
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func GinHttps(isHttps bool) error {
-	if isHttps {
-		port = 443
-	} else {
-		port = 80
-	}
-
+func GinHttps() error {
 	r := gin.Default()
 	r.NoRoute(func(c *gin.Context) {
 		c.String(200, "{'message':'ok'}")
+		Logger.Infof("Host=%s, URL=%s, Method=%s, Response=200", c.Request.Host, c.Request.URL, c.Request.Method)
 	})
 
-	if isHttps {
-		r.Use(TlsHandler(port))
-
-		return r.RunTLS(":"+strconv.Itoa(port), "cert.pem", "key.pem")
-	}
-
-	return r.Run(":" + strconv.Itoa(port))
+	go r.Run(":80")
+	r.Use(TlsHandler(443))
+	err := r.RunTLS(":443", "cert.pem", "key.pem")
+	return err
 }
 
 func TlsHandler(port int) gin.HandlerFunc {
